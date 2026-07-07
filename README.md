@@ -1,94 +1,38 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo J&E - Botas y Botines</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
-        
-        /* Ajuste para contenedor del logo */
-        .header-logo { margin-bottom: 30px; text-align: left; padding-left: 20px; }
-        .header-logo img { width: 350px; height: auto; }
-        
-        /* Ajuste automático para móvil */
-        @media (max-width: 600px) {
-            .header-logo { text-align: center; padding-left: 0; }
-            .header-logo img { width: 200px; }
-        }
-        
-        h1 { text-align: center; color: #333; margin-top: 0; }
-        #buscador { display: block; margin: 0 auto 20px auto; padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc; }
-        #contenedor-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .producto { border: 1px solid #ddd; padding: 15px; background-color: white; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .producto img { max-width: 100%; height: 250px; object-fit: contain; margin-bottom: 10px; }
-        .agotado { opacity: 0.6; }
-        a { display: inline-block; margin-top: 10px; padding: 8px 15px; background: #25d366; color: white; text-decoration: none; border-radius: 5px; }
-    </style>
-</head>
-<body>
+# Catálogo J&E - Botas y Botines
 
-    <!-- Logo insertado -->
-    <div class="header-logo">
-        <img src="assets_botines/logo_je.png" alt="Logo J&E">
-    </div>
+Sistema de catálogo digital autogestionable diseñado para **J&E Zapatos y Carteras**. Esta herramienta permite a los clientes visualizar la colección de calzado en tiempo real, facilitando una experiencia de compra directa y eficiente.
 
-    <h1>Línea de Botas y Botines de Cuero</h1>
-    <input type="text" id="buscador" placeholder="Buscar por Ref o Modelo...">
-    <div id="contenedor-productos"></div>
+## Características Principales
 
-    <script>
-        let listaProductos = [];
+* **Gestión de Stock en Tiempo Real**: Visualización clara del estado de cada producto: **DISPONIBLE** o **AGOTADO**.
 
-        // Carga inicial de datos
-        fetch('catalogo_botines.json')
-            .then(response => response.json())
-            .then(data => {
-                listaProductos = data.productos || data;
-                renderizarProductos(listaProductos);
-            })
-            .catch(error => console.error('Error cargando JSON:', error));
 
-        function renderizarProductos(productos) {
-            const contenedor = document.getElementById('contenedor-productos');
-            contenedor.innerHTML = '';
-            
-            if (!productos || productos.length === 0) {
-                contenedor.innerHTML = '<p style="text-align:center; width:100%;">No se encontraron productos con esa referencia.</p>';
-                return;
-            }
+* **Intención de Reserva**: Botón de acción (CTA) directo hacia WhatsApp, permitiendo que el cliente inicie una reserva inmediata con el código del producto seleccionado.
 
-            productos.forEach(producto => {
-                const div = document.createElement('div');
-                div.className = `producto ${producto.estado}`;
-                const enlaceWp = `https://wa.me/34633531674?text=${encodeURIComponent('Hola, me interesa la Ref ' + producto.id)}`;
-                
-                div.innerHTML = `
-                    <img src="assets_botines/${producto.imagen}" alt="Ref ${producto.id}">
-                    <h3>Ref: ${producto.id}</h3>
-                    <p>Modelo: ${producto.nombre}</p>
-                    <p><strong>Estado: ${producto.estado.toUpperCase()}</strong></p>
-                    ${producto.estado === 'disponible' ? `<a href="${enlaceWp}" target="_blank" rel="noopener noreferrer">Consultar</a>` : '<button disabled>Agotado</button>'}
-                `;
-                contenedor.appendChild(div);
-            });
-        }
 
-        // Buscador con validación de espacios
-        document.getElementById('buscador').addEventListener('input', (e) => {
-            const termino = e.target.value.trim().toLowerCase();
-            
-            if (termino === "") {
-                renderizarProductos(listaProductos);
-                return;
-            }
+* **Buscador Inteligente**: Barra de búsqueda alfanumérica que permite filtrar rápidamente por referencia o nombre de modelo.
 
-            const filtrados = listaProductos.filter(p => 
-                String(p.id).toLowerCase().includes(termino) || 
-                String(p.nombre).toLowerCase().includes(termino)
-            );
-            renderizarProductos(filtrados);
-        });
-    </script>
-</body>
-</html>
+
+* **Diseño Responsivo**: Adaptado para una navegación fluida tanto en dispositivos móviles como en escritorio.
+
+
+
+## Especificaciones Técnicas
+
+* **Arquitectura**: Desarrollo web estático optimizado para despliegue en entornos gestionados.
+
+
+* **Lógica de Negocio**: Implementación de estados dinámicos (UI) basada en el inventario actual.
+
+
+* **Integración**: Flujo de ventas automatizado vía API de WhatsApp.
+
+
+
+## Cómo gestionar el catálogo
+
+Para actualizar el inventario, simplemente modifica el archivo `catalogo_botines.json` en el directorio raíz. El sistema procesará automáticamente los cambios y los reflejará en la interfaz sin necesidad de ajustes adicionales en el código fuente.
+
+---
+
+Al guardar este nuevo contenido, tu repositorio de GitHub tendrá una carta de presentación profesional, eliminando la confusión visual anterior. ¿Necesitas añadir algún detalle técnico adicional o estás listo para este último cambio?
