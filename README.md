@@ -32,6 +32,7 @@ Sistema de catálogo digital autogestionable diseñado para **J&E Zapatos y Cart
 ## Cómo gestionar el catálogo
 
 Para actualizar el inventario, simplemente modifica el archivo `catalogo_botines.json` en el directorio raíz. El sistema procesará automáticamente los cambios y los reflejará en la interfaz sin necesidad de ajustes adicionales en el código fuente.
+...
 
 ---
 
