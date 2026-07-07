@@ -1,7 +1,7 @@
 // Variable global para almacenar todos los productos
 let listaProductos = [];
 
-// Función para renderizar los productos: Formato directo sin prefijos innecesarios
+// Función para renderizar los productos
 function renderizarProductos(productos) {
     const contenedor = document.getElementById('contenedor-productos');
     contenedor.innerHTML = ''; 
@@ -13,19 +13,28 @@ function renderizarProductos(productos) {
     
     productos.forEach(producto => {
         const div = document.createElement('div');
-        div.className = `producto ${producto.estado}`;
+        // Clase dinámica para el estilo CSS (disponible/agotado)
+        div.className = `producto ${producto.estado.toLowerCase()}`;
         
-        // Mensaje directo y profesional
-        const mensaje = `Hola, me interesa el producto con código: ${producto.id}. ¿Podrían ayudarme?`;
+        const esDisponible = producto.estado.toUpperCase() === 'DISPONIBLE';
+        
+        // Mensaje directo de intención de compra
+        const mensaje = `Hola, quiero reservar el producto con código: ${producto.id}. ¡Hey, quiero este calzado!`;
+        
+        // La variable es necesaria para construir el enlace dinámico correctamente
         const enlaceWp = `https://wa.me/34633531674?text=${encodeURIComponent(mensaje)}`;
         
-        // Visualización limpia (sin "Ref.") tal como lo exige el flujo de la factura
+        // Lógica del botón: "Reservar" para disponibles, botón deshabilitado para agotados
+        const botonHTML = esDisponible 
+            ? `<a href="${enlaceWp}" target="_blank" class="btn-reservar">Reservar</a>`
+            : `<button class="btn-agotado" disabled>Agotado</button>`;
+        
         div.innerHTML = `
             <img src="assets_botines/${producto.imagen}" alt="Código ${producto.id}">
             <h3>${producto.id}</h3>
             <p>Modelo: ${producto.nombre}</p>
             <p><strong>Estado: ${producto.estado.toUpperCase()}</strong></p>
-            <a href="${enlaceWp}" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a>
+            ${botonHTML}
         `;
         contenedor.appendChild(div);
     });
@@ -44,19 +53,14 @@ fetch('catalogo_botines.json')
 const buscador = document.getElementById('buscador');
 if (buscador) {
     buscador.addEventListener('input', (e) => {
-        // Buscamos coincidencia exacta con el valor ingresado (alfanumérico)
         const termino = e.target.value.trim().toLowerCase();
-        
         if (termino === "") {
             renderizarProductos(listaProductos);
             return;
         }
-
-        // Filtramos buscando que el ID contenga lo que el usuario digita
         const filtrados = listaProductos.filter(p => 
             String(p.id).toLowerCase().includes(termino)
         );
-        
         renderizarProductos(filtrados);
     });
 }
