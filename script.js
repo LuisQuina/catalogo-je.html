@@ -62,6 +62,6 @@ if (buscador) {
             String(p.id).toLowerCase().includes(termino)
         );
         renderizarProductos(filtrados);
-        // forzando despliegue
+        // Version actualizada para forzar cache.
     });
 }
